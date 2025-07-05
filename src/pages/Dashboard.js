@@ -109,18 +109,18 @@ export default class Dashboard extends React.Component {
           </Grid>
         </Box>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 2, height: 340, borderRadius: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid item xs={12}>
+            <Paper sx={{ p: 3, height: 380, borderRadius: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mb: 3 }}>
               <Typography variant="subtitle1" fontWeight="bold" mb={2} align="left" sx={{ width: '100%' }}>Distribusi Data (Pie Chart)</Typography>
               {isAllZero ? (
-                <Box sx={{ textAlign: 'center', color: 'grey.500', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  <InsertChartOutlinedIcon sx={{ fontSize: 48, mb: 1, color: 'grey.400' }} />
+                <Box sx={{ textAlign: 'center', color: 'grey.500', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 220 }}>
+                  <InsertChartOutlinedIcon sx={{ fontSize: 56, mb: 1, color: 'grey.400' }} />
                   <Typography variant="body2">Belum ada data untuk ditampilkan</Typography>
                 </Box>
               ) : (
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="60%" height={260}>
                   <PieChart>
-                    <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                    <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={110} label>
                       {chartData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
@@ -131,16 +131,16 @@ export default class Dashboard extends React.Component {
               )}
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 2, height: 340, borderRadius: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid item xs={12}>
+            <Paper sx={{ p: 3, height: 380, borderRadius: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Typography variant="subtitle1" fontWeight="bold" mb={2} align="left" sx={{ width: '100%' }}>Perbandingan Data (Bar Chart)</Typography>
               {isAllZero ? (
-                <Box sx={{ textAlign: 'center', color: 'grey.500', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  <InsertChartOutlinedIcon sx={{ fontSize: 48, mb: 1, color: 'grey.400' }} />
+                <Box sx={{ textAlign: 'center', color: 'grey.500', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 220 }}>
+                  <InsertChartOutlinedIcon sx={{ fontSize: 56, mb: 1, color: 'grey.400' }} />
                   <Typography variant="body2">Belum ada data untuk ditampilkan</Typography>
                 </Box>
               ) : (
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="90%" height={260}>
                   <BarChart data={barData}>
                     <XAxis dataKey="name" />
                     <YAxis allowDecimals={false} />
