@@ -1,24 +1,32 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
+import Dashboard from './pages/Dashboard';
+import Mahasiswa from './pages/Mahasiswa';
+import Dosen from './pages/Dosen';
+import MataKuliah from './pages/MataKuliah';
+import KRS from './pages/KRS';
+import Nilai from './pages/Nilai';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div style={{ display: 'flex', minHeight: '100vh' }}>
+        <Sidebar />
+        <div style={{ flex: 1, padding: '24px', background: '#f4f6fa' }}>
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/mahasiswa" element={<Mahasiswa />} />
+            <Route path="/dosen" element={<Dosen />} />
+            <Route path="/matakuliah" element={<MataKuliah />} />
+            <Route path="/krs" element={<KRS />} />
+            <Route path="/nilai" element={<Nilai />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
