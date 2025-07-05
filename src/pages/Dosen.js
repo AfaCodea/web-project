@@ -1,89 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, Card, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, TextField, Stack, Paper } from '@mui/material';
+import React from 'react';
+import CrudTable from '../components/CrudTable';
 
 export default function Dosen() {
-  const [data, setData] = useState([]);
-  const [form, setForm] = useState({ nip: '', nama: '', tgl: '' });
-  const [editIdx, setEditIdx] = useState(-1);
-
-  useEffect(() => {
-    const dosen = JSON.parse(localStorage.getItem('dosen') || '[]');
-    setData(dosen);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('dosen', JSON.stringify(data));
-  }, [data]);
-
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (!form.nip || !form.nama || !form.tgl) return;
-    if (editIdx === -1) {
-      setData([...data, form]);
-    } else {
-      const newData = [...data];
-      newData[editIdx] = form;
-      setData(newData);
-      setEditIdx(-1);
-    }
-    setForm({ nip: '', nama: '', tgl: '' });
-  };
-
-  const handleEdit = idx => {
-    setForm(data[idx]);
-    setEditIdx(idx);
-  };
-
-  const handleDelete = idx => {
-    if (window.confirm('Hapus data ini?')) {
-      setData(data.filter((_, i) => i !== idx));
-    }
-  };
-
   return (
-    <Box>
-      <Typography variant="h5" fontWeight="bold" mb={2}>Data Dosen</Typography>
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
-              <TextField name="nip" label="NIP" value={form.nip} onChange={handleChange} required size="small" />
-              <TextField name="nama" label="Nama" value={form.nama} onChange={handleChange} required size="small" />
-              <TextField name="tgl" label="Tanggal Lahir" value={form.tgl} onChange={handleChange} required size="small" placeholder="dd/mm/yyyy" />
-              <Button type="submit" variant="contained" color="primary">{editIdx === -1 ? 'Tambah' : 'Update'}</Button>
-              {editIdx !== -1 && <Button type="button" variant="outlined" color="secondary" onClick={() => { setForm({ nip: '', nama: '', tgl: '' }); setEditIdx(-1); }}>Batal</Button>}
-            </Stack>
-          </form>
-        </CardContent>
-      </Card>
-      <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>NIP</TableCell>
-              <TableCell>Nama</TableCell>
-              <TableCell>Tanggal Lahir</TableCell>
-              <TableCell align="center">Aksi</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((d, i) => (
-              <TableRow key={i}>
-                <TableCell>{d.nip}</TableCell>
-                <TableCell>{d.nama}</TableCell>
-                <TableCell>{d.tgl}</TableCell>
-                <TableCell align="center">
-                  <Button onClick={() => handleEdit(i)} size="small" variant="outlined">Edit</Button>
-                  <Button onClick={() => handleDelete(i)} size="small" color="error" variant="outlined" sx={{ ml: 1 }}>Hapus</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-            {data.length === 0 && <TableRow><TableCell colSpan={4} align="center">Belum ada data</TableCell></TableRow>}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+    <CrudTable
+      title="Data Dosen"
+      localStorageKey="dosen"
+      fields={[
+        { name: 'nip', label: 'NIP', required: true },
+        { name: 'nama', label: 'Nama', required: true },
+        { name: 'tgl', label: 'Tanggal Lahir', required: true, placeholder: 'dd/mm/yyyy' },
+      ]}
+    />
   );
 } 
