@@ -8,7 +8,7 @@ export default function Nilai() {
   const [editIdx, setEditIdx] = useState(-1);
   const [mahasiswa, setMahasiswa] = useState([]);
   const [matakuliah, setMatakuliah] = useState([]);
-
+  
   useEffect(() => {
     setData(JSON.parse(localStorage.getItem('nilai') || '[]'));
     setMahasiswa(JSON.parse(localStorage.getItem('mahasiswa') || '[]'));
