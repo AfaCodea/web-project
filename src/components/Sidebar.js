@@ -53,12 +53,12 @@ export default function Sidebar() {
                 sx={{
                   borderRadius: 2,
                   mb: 0.5,
-                  color: location.pathname === item.path ? '#232c3d' : '#fff',
-                  background: location.pathname === item.path ? '#fff' : 'transparent',
+                  color: '#fff',
+                  background: location.pathname === item.path ? '#fff2' : 'transparent',
                   '&:hover': { background: '#fff2', color: '#fff' },
                 }}
               >
-                <ListItemIcon sx={{ color: location.pathname === item.path ? '#232c3d' : '#fff' }}>
+                <ListItemIcon sx={{ color: '#fff' }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText primary={item.label} />
