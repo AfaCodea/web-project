@@ -4,6 +4,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import PersonIcon from '@mui/icons-material/Person';
 import BookIcon from '@mui/icons-material/Book';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
+import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 import CountUp from 'react-countup';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Legend, AreaChart, Area } from 'recharts';
 
@@ -55,6 +56,7 @@ export default class Dashboard extends React.Component {
 
   render() {
     const { counts, chartData, barData } = this.state;
+    const isAllZero = counts.mahasiswa === 0 && counts.dosen === 0 && counts.matakuliah === 0;
     const summary = [
       { label: 'Jumlah Mahasiswa', value: counts.mahasiswa, icon: <SchoolIcon fontSize="large" />, gradient: GRADIENTS[0] },
       { label: 'Jumlah Dosen', value: counts.dosen, icon: <PersonIcon fontSize="large" />, gradient: GRADIENTS[1] },
@@ -95,6 +97,11 @@ export default class Dashboard extends React.Component {
                     <Typography variant="h4" fontWeight="bold">
                       <CountUp end={item.value} duration={1.2} separator="," />
                     </Typography>
+                    {item.value === 0 && (
+                      <Typography variant="caption" color="#fff" sx={{ opacity: 0.85 }}>
+                        Belum ada data
+                      </Typography>
+                    )}
                   </CardContent>
                 </Card>
               </Grid>
@@ -103,34 +110,48 @@ export default class Dashboard extends React.Component {
         </Box>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 2, height: 340, borderRadius: 3 }}>
-              <Typography variant="subtitle1" fontWeight="bold" mb={2}>Distribusi Data (Pie Chart)</Typography>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+            <Paper sx={{ p: 2, height: 340, borderRadius: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Typography variant="subtitle1" fontWeight="bold" mb={2} align="left" sx={{ width: '100%' }}>Distribusi Data (Pie Chart)</Typography>
+              {isAllZero ? (
+                <Box sx={{ textAlign: 'center', color: 'grey.500', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <InsertChartOutlinedIcon sx={{ fontSize: 48, mb: 1, color: 'grey.400' }} />
+                  <Typography variant="body2">Belum ada data untuk ditampilkan</Typography>
+                </Box>
+              ) : (
+                <ResponsiveContainer width="100%" height={250}>
+                  <PieChart>
+                    <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              )}
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 2, height: 340, borderRadius: 3 }}>
-              <Typography variant="subtitle1" fontWeight="bold" mb={2}>Perbandingan Data (Bar Chart)</Typography>
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={barData}>
-                  <XAxis dataKey="name" />
-                  <YAxis allowDecimals={false} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="Mahasiswa" fill="#1976d2" radius={[8, 8, 0, 0]} />
-                  <Bar dataKey="Dosen" fill="#43a047" radius={[8, 8, 0, 0]} />
-                  <Bar dataKey="Mata Kuliah" fill="#fbc02d" radius={[8, 8, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+            <Paper sx={{ p: 2, height: 340, borderRadius: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Typography variant="subtitle1" fontWeight="bold" mb={2} align="left" sx={{ width: '100%' }}>Perbandingan Data (Bar Chart)</Typography>
+              {isAllZero ? (
+                <Box sx={{ textAlign: 'center', color: 'grey.500', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <InsertChartOutlinedIcon sx={{ fontSize: 48, mb: 1, color: 'grey.400' }} />
+                  <Typography variant="body2">Belum ada data untuk ditampilkan</Typography>
+                </Box>
+              ) : (
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={barData}>
+                    <XAxis dataKey="name" />
+                    <YAxis allowDecimals={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="Mahasiswa" fill="#1976d2" radius={[8, 8, 0, 0]} />
+                    <Bar dataKey="Dosen" fill="#43a047" radius={[8, 8, 0, 0]} />
+                    <Bar dataKey="Mata Kuliah" fill="#fbc02d" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </Paper>
           </Grid>
         </Grid>
@@ -164,13 +185,25 @@ export default class Dashboard extends React.Component {
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} mt={4}>
           <Paper sx={{ p: 3, flex: 1, borderRadius: 3, background: 'linear-gradient(135deg, #1976d2 0%, #64b5f6 100%)', color: '#fff', boxShadow: 3 }}>
             <Typography variant="h6" fontWeight="bold">Insight</Typography>
-            <Typography variant="body1" mt={1}>Mahasiswa terbanyak di Teknik Informatika (dummy)</Typography>
-            <Typography variant="body2" mt={1}>Pertumbuhan data mahasiswa konsisten naik setiap bulan.</Typography>
+            {isAllZero ? (
+              <Typography variant="body2" mt={1}>Tambahkan data mahasiswa, dosen, atau mata kuliah untuk melihat insight analitik di sini.</Typography>
+            ) : (
+              <>
+                <Typography variant="body1" mt={1}>Mahasiswa terbanyak di Teknik Informatika (dummy)</Typography>
+                <Typography variant="body2" mt={1}>Pertumbuhan data mahasiswa konsisten naik setiap bulan.</Typography>
+              </>
+            )}
           </Paper>
           <Paper sx={{ p: 3, flex: 1, borderRadius: 3, background: 'linear-gradient(135deg, #43a047 0%, #a5d6a7 100%)', color: '#fff', boxShadow: 3 }}>
             <Typography variant="h6" fontWeight="bold">Statistik Lainnya</Typography>
-            <Typography variant="body1" mt={1}>Dosen aktif meningkat 5% (dummy)</Typography>
-            <Typography variant="body2" mt={1}>Jumlah mata kuliah bertambah setiap semester.</Typography>
+            {isAllZero ? (
+              <Typography variant="body2" mt={1}>Belum ada statistik tambahan. Silakan tambahkan data terlebih dahulu.</Typography>
+            ) : (
+              <>
+                <Typography variant="body1" mt={1}>Dosen aktif meningkat 5% (dummy)</Typography>
+                <Typography variant="body2" mt={1}>Jumlah mata kuliah bertambah setiap semester.</Typography>
+              </>
+            )}
           </Paper>
         </Stack>
       </Box>
